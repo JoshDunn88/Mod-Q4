@@ -427,12 +427,12 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 
 	
 			if ( gameLocal.time - fireHeldTime > chargeTime ) {	
-//JOSH charge = triple batarang, batarang damage is increased every 2 combo levels
-				Attack ( true, 3, spread, 0, (1.0f + (player->inventory.combo/2)) );
+//JOSH charge = more accurate, combo adds hits
+				Attack ( true, 1 + (int(player->inventory.combo / 4)), spread/2, 0, 1.0f );
 				PlayEffect ( "fx_chargedflash", barrelJointView, false );
 				PlayAnim( ANIMCHANNEL_ALL, "chargedfire", parms.blendFrames );
 			} else {
-				Attack ( false, 1, spread, 0, (1.0f + (player->inventory.combo / 2)));
+				Attack ( false, 1 + (int(player->inventory.combo / 4)), spread, 0, 1.0f );
 				PlayEffect ( "fx_normalflash", barrelJointView, false );
 				PlayAnim( ANIMCHANNEL_ALL, "fire", parms.blendFrames );
 			}

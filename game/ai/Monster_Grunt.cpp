@@ -198,8 +198,8 @@ void rvMonsterGrunt::OnDeath ( void ) {
 //JOSH BEGIN
 	idPlayer* player;
 	player = gameLocal.GetLocalPlayer();
-	player->inventory.AddCombo(1);
-	player->UpdateHudCombo(player->hud);
+	player->inventory.AddKill();
+	player->UpdateHudKills(player->hud);
 //JOSH END
 
 	RageStop ( );
@@ -232,6 +232,10 @@ rvMonsterGrunt::AdjustHealthByDamage
 */
 void rvMonsterGrunt::AdjustHealthByDamage ( int damage ) {
 	// Take less damage during enrage process 
+	idPlayer* player;
+	player = gameLocal.GetLocalPlayer();
+	player->inventory.AddCombo(1);
+	player->UpdateHudCombo(player->hud);
 	if ( rageThreshold && health < rageThreshold ) { 
 		health -= (damage * 0.25f);
 		return;

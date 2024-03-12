@@ -208,6 +208,7 @@ void idInventory::Clear( void ) {
 	secretAreasDiscovered = 0;
 //JOSH
 	combo = 0;
+	killcount = 0;
 
 
 	memset( ammo, 0, sizeof( ammo ) );
@@ -344,6 +345,7 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	maxarmor		= dict.GetInt( "maxarmor", "100" );
 //JOSH
 	combo			= 0;
+	killcount = 0;
 
 	// ammo
 	for( i = 0; i < MAX_AMMOTYPES; i++ ) {
@@ -1083,8 +1085,20 @@ idInventory::AddCombo
 ===============
 */
 void idInventory::AddCombo(int toAdd) {
-	combo += toAdd;
+	//combo multiplier?
+	if (combo < 100) {
+		combo += toAdd;
+	}
 	comboTime = gameLocal.time;
+}
+
+/*
+===============
+idInventory::AddCombo
+===============
+*/
+void idInventory::AddKill() {
+	killcount++;
 }
 
 /*
@@ -3415,6 +3429,15 @@ idPlayer::UpdateHudCombo
 */
 void idPlayer::UpdateHudCombo(idUserInterface* _hud) {
 	_hud->SetStateInt("player_combo", inventory.combo);
+}
+
+/*
+===============
+idPlayer::UpdateHudCombo
+===============
+*/
+void idPlayer::UpdateHudKills(idUserInterface* _hud) {
+	_hud->SetStateInt("player_kills", inventory.killcount);
 }
 /*
 ===============

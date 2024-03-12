@@ -65,7 +65,7 @@ void rvMonsterGrunt::Spawn ( void ) {
 
 	// Custom actions
 	actionMeleeMoveAttack.Init	( spawnArgs, "action_meleeMoveAttack",	NULL,				AIACTIONF_ATTACK );
-	actionChaingunAttack.Init	( spawnArgs, "action_chaingunAttack",	NULL,				AIACTIONF_ATTACK );
+	// actionChaingunAttack.Init	( spawnArgs, "action_chaingunAttack",	NULL,				AIACTIONF_ATTACK ); JOSH disable ranged?
 	actionLeapAttack.Init		( spawnArgs, "action_leapAttack",		"Torso_LeapAttack",	AIACTIONF_ATTACK );
 
 	// Enraged to start?
@@ -195,6 +195,13 @@ rvMonsterGrunt::OnDeath
 ================
 */
 void rvMonsterGrunt::OnDeath ( void ) {
+//JOSH BEGIN
+	idPlayer* player;
+	player = gameLocal.GetLocalPlayer();
+	player->inventory.AddKill();
+	player->UpdateHudKills(player->hud);
+//JOSH END
+
 	RageStop ( );
 	return idAI::OnDeath ( );
 }
@@ -213,7 +220,7 @@ void rvMonsterGrunt::OnTacticalChange ( aiTactical_t oldTactical ) {
 			break;
 
 		default:
-			actionRangedAttack.fl.disabled = false;
+			actionRangedAttack.fl.disabled = true; //JOSH disable ranged permanently?
 			break;
 	}
 }
@@ -225,6 +232,10 @@ rvMonsterGrunt::AdjustHealthByDamage
 */
 void rvMonsterGrunt::AdjustHealthByDamage ( int damage ) {
 	// Take less damage during enrage process 
+	idPlayer* player;
+	player = gameLocal.GetLocalPlayer();
+	player->inventory.AddCombo(1);
+	player->UpdateHudCombo(player->hud);
 	if ( rageThreshold && health < rageThreshold ) { 
 		health -= (damage * 0.25f);
 		return;

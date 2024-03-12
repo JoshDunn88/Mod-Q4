@@ -265,6 +265,17 @@ public:
 //	idList<rvDatabaseEntry>	database;
 	
 	int						secretAreasDiscovered;
+// JOSH BEGIN
+	int						combo;
+	float					comboTime;
+	int						killcount;
+	float					timer;
+	float					startTime;
+	void					AddCombo(int toAdd);
+	void					AddKill();
+	void					ResetCombo(idPlayer* player);
+	void					UpdateTimer(idPlayer* player, float time);
+// JOSH END
 };
 
 class idPlayer : public idActor {
@@ -641,6 +652,12 @@ public:
 #endif
 	void					UpdateHudStats( idUserInterface *hud );
  	void					UpdateHudAmmo( idUserInterface *hud );
+//JOSH BEGIN
+	bool					prepOver;
+	void					UpdateHudCombo(idUserInterface* hud);
+	void					UpdateHudKills(idUserInterface* hud);
+	void					UpdateHudTimer(idUserInterface* hud);
+//JOSH END
  	void					ShowTip( const char *title, const char *tip, bool autoHide );
  	void					HideTip( void );
  	bool					IsTipVisible( void ) { return tipUp; };

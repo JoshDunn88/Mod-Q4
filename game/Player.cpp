@@ -9621,6 +9621,12 @@ void idPlayer::Think( void ) {
 	UpdateHud();
 
 	UpdatePowerUps();
+//JOSH finally correct spot lfg
+	if (inventory.comboTime + 8000 <= gameLocal.time) {
+		//inventory.AddCombo(5);
+		inventory.ResetCombo(this);
+	}
+	
 
 	UpdateDeathSkin( false );
 
@@ -11953,12 +11959,7 @@ void idPlayer::LocalClientPredictionThink( void ) {
 	}
 
 	UpdateHud();
-	/*JOSH this timer will not trigger, this is pobably the wrong function to put this in
-	if (inventory.comboTime + 8000 <= gameLocal.time) {
-		inventory.AddCombo(5);
-		inventory.ResetCombo(gameLocal.GetLocalPlayer());
-	}
-	*/
+	
  	if ( gameLocal.isNewFrame ) {
 		UpdatePowerUps();
  	}

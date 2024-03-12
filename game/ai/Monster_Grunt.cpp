@@ -195,6 +195,13 @@ rvMonsterGrunt::OnDeath
 ================
 */
 void rvMonsterGrunt::OnDeath ( void ) {
+//JOSH BEGIN
+	idPlayer* player;
+	player = gameLocal.GetLocalPlayer();
+	player->inventory.AddCombo(1);
+	player->UpdateHudCombo(player->hud);
+//JOSH END
+
 	RageStop ( );
 	return idAI::OnDeath ( );
 }

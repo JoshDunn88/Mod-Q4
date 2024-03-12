@@ -206,6 +206,9 @@ void idInventory::Clear( void ) {
 	armor				= 0;
 	maxarmor			= 0;
 	secretAreasDiscovered = 0;
+//JOSH
+	combo = 0;
+
 
 	memset( ammo, 0, sizeof( ammo ) );
 
@@ -339,6 +342,8 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	maxHealth		= dict.GetInt( "maxhealth", "100" );
 	armor			= dict.GetInt( "armor", "50" );
 	maxarmor		= dict.GetInt( "maxarmor", "100" );
+//JOSH
+	combo			= 0;
 
 	// ammo
 	for( i = 0; i < MAX_AMMOTYPES; i++ ) {
@@ -484,6 +489,7 @@ void idInventory::Restore( idRestoreGame *savefile ) {
 	savefile->ReadInt( powerups );
 	savefile->ReadInt( armor );
 	savefile->ReadInt( maxarmor );
+//JOSH TO-DO: set combo to 0?
 
 	for( i = 0; i < MAX_AMMO; i++ ) {
 		savefile->ReadInt( ammo[ i ] );
@@ -1069,6 +1075,15 @@ bool idInventory::UseAmmo( int index, int amount ) {
 	}
 
 	return true;
+}
+
+/*
+===============
+idInventory::AddCombo
+===============
+*/
+void idInventory::AddCombo(int toAdd) {
+	combo += toAdd;
 }
 
 /*
@@ -3382,6 +3397,14 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 	_hud->SetStateBool( "player_ammo_empty", ( ammoamount == 0 ) );
 }
 
+/*
+===============
+idPlayer::UpdateHudCombo
+===============
+*/
+void idPlayer::UpdateHudCombo(idUserInterface* _hud) {
+	_hud->SetStateInt("player_combo", inventory.combo);
+}
 /*
 ===============
 idPlayer::UpdateHudStats

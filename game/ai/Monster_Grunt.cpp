@@ -65,7 +65,7 @@ void rvMonsterGrunt::Spawn ( void ) {
 
 	// Custom actions
 	actionMeleeMoveAttack.Init	( spawnArgs, "action_meleeMoveAttack",	NULL,				AIACTIONF_ATTACK );
-	actionChaingunAttack.Init	( spawnArgs, "action_chaingunAttack",	NULL,				AIACTIONF_ATTACK );
+	// actionChaingunAttack.Init	( spawnArgs, "action_chaingunAttack",	NULL,				AIACTIONF_ATTACK ); JOSH disable ranged?
 	actionLeapAttack.Init		( spawnArgs, "action_leapAttack",		"Torso_LeapAttack",	AIACTIONF_ATTACK );
 
 	// Enraged to start?
@@ -220,7 +220,7 @@ void rvMonsterGrunt::OnTacticalChange ( aiTactical_t oldTactical ) {
 			break;
 
 		default:
-			actionRangedAttack.fl.disabled = false;
+			actionRangedAttack.fl.disabled = true; //JOSH disable ranged permanently?
 			break;
 	}
 }

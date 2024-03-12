@@ -1084,6 +1084,17 @@ idInventory::AddCombo
 */
 void idInventory::AddCombo(int toAdd) {
 	combo += toAdd;
+	comboTime = gameLocal.time;
+}
+
+/*
+===============
+idInventory::ResetCombo
+===============
+*/
+void idInventory::ResetCombo(idPlayer* player) {
+	combo = NULL;
+	player->UpdateHudCombo(player->hud);
 }
 
 /*
@@ -10344,6 +10355,10 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
   	lastDamageDir.Normalize();
 	lastDamageDef = damageDef->Index();
 	lastDamageLocation = location;
+
+//JOSH
+	inventory.ResetCombo(this);
+	
 }
 
 /*
@@ -11915,9 +11930,14 @@ void idPlayer::LocalClientPredictionThink( void ) {
 	}
 
 	UpdateHud();
-
+	/*JOSH this timer will not trigger, this is pobably the wrong function to put this in
+	if (inventory.comboTime + 8000 <= gameLocal.time) {
+		inventory.AddCombo(5);
+		inventory.ResetCombo(gameLocal.GetLocalPlayer());
+	}
+	*/
  	if ( gameLocal.isNewFrame ) {
- 		UpdatePowerUps();
+		UpdatePowerUps();
  	}
 
  	UpdateDeathSkin( false );

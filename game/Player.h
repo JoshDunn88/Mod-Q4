@@ -267,7 +267,9 @@ public:
 	int						secretAreasDiscovered;
 // JOSH BEGIN
 	int						combo;
+	float					comboTime;
 	void					AddCombo(int toAdd);
+	void					ResetCombo(idPlayer* player);
 // JOSH END
 };
 

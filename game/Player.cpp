@@ -1086,7 +1086,7 @@ idInventory::AddCombo
 */
 void idInventory::AddCombo(int toAdd) {
 	//combo multiplier?
-	if (combo < 100) {
+	if (combo < 99) {
 		combo += toAdd;
 	}
 	comboTime = gameLocal.time;

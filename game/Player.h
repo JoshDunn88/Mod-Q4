@@ -269,9 +269,12 @@ public:
 	int						combo;
 	float					comboTime;
 	int						killcount;
+	float					timer;
+	float					startTime;
 	void					AddCombo(int toAdd);
 	void					AddKill();
 	void					ResetCombo(idPlayer* player);
+	void					UpdateTimer(idPlayer* player, float time);
 // JOSH END
 };
 
@@ -650,8 +653,10 @@ public:
 	void					UpdateHudStats( idUserInterface *hud );
  	void					UpdateHudAmmo( idUserInterface *hud );
 //JOSH BEGIN
+	bool					prepOver;
 	void					UpdateHudCombo(idUserInterface* hud);
 	void					UpdateHudKills(idUserInterface* hud);
+	void					UpdateHudTimer(idUserInterface* hud);
 //JOSH END
  	void					ShowTip( const char *title, const char *tip, bool autoHide );
  	void					HideTip( void );

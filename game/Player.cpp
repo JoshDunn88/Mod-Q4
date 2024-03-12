@@ -1085,20 +1085,31 @@ idInventory::AddCombo
 ===============
 */
 void idInventory::AddCombo(int toAdd) {
+	idPlayer* player;
+	player = gameLocal.GetLocalPlayer();
 	//combo multiplier?
 	if (combo < 99) {
 		combo += toAdd;
 	}
 	comboTime = gameLocal.time;
+
+//JOSH 
+	if (!player->prepOver) {
+		player->inventory.startTime = float(comboTime) / 1000;
+		player->prepOver = true;
+	}
+
 }
 
 /*
 ===============
-idInventory::AddCombo
+idInventory::AddKill
 ===============
 */
 void idInventory::AddKill() {
-	killcount++;
+	if (killcount < 20) {
+		killcount++;
+	}
 }
 
 /*
@@ -1109,6 +1120,16 @@ idInventory::ResetCombo
 void idInventory::ResetCombo(idPlayer* player) {
 	combo = NULL;
 	player->UpdateHudCombo(player->hud);
+}
+
+/*
+===============
+idInventory::UpdateTimer
+===============
+*/
+void idInventory::UpdateTimer(idPlayer* player, float time) {
+	timer = time - startTime;
+	player->UpdateHudTimer(player->hud);
 }
 
 /*
@@ -1806,6 +1827,8 @@ void idPlayer::Init( void ) {
 		teamDoublerPending = false;
 		teamDoubler = PlayEffect( "fx_doubler", renderEntity.origin, renderEntity.axis, true );
 	}
+
+
 }
 
 /*
@@ -1848,6 +1871,7 @@ Prepare any resources used by the player.
 void idPlayer::Spawn( void ) {
 	idStr		temp;
 	idBounds	bounds;
+	this->prepOver = false;
 
 	if ( entityNumber >= MAX_CLIENTS ) {
 		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
@@ -2095,6 +2119,8 @@ void idPlayer::Spawn( void ) {
 //RITUAL END
 
 	itemCosts = static_cast< const idDeclEntityDef * >( declManager->FindType( DECL_ENTITYDEF, "ItemCostConstants", false ) );
+
+
 }
 
 /*
@@ -3438,6 +3464,15 @@ idPlayer::UpdateHudCombo
 */
 void idPlayer::UpdateHudKills(idUserInterface* _hud) {
 	_hud->SetStateInt("player_kills", inventory.killcount);
+}
+
+/*
+===============
+idPlayer::UpdateHudTimer
+===============
+*/
+void idPlayer::UpdateHudTimer(idUserInterface* _hud) {
+	_hud->SetStateInt("timer", inventory.timer);
 }
 /*
 ===============
@@ -9623,8 +9658,10 @@ void idPlayer::Think( void ) {
 	UpdatePowerUps();
 //JOSH finally correct spot lfg
 	if (inventory.comboTime + 8000 <= gameLocal.time) {
-		//inventory.AddCombo(5);
 		inventory.ResetCombo(this);
+	}
+	if (inventory.killcount < 20 && this->prepOver) {
+		inventory.UpdateTimer(this, float(gameLocal.time) / 1000);
 	}
 	
 
